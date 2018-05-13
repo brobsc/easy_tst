@@ -10,7 +10,8 @@ setup(name='easy_tst',
       url='',
       packages=['easy_tst'],
       install_requires=[
-        'pyperclip',
+          'pyperclip',
+          'requests',
       ],
       scripts=['bin/easy_tst'],
      )
