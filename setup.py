@@ -12,6 +12,7 @@ setup(name='easy_tst',
       install_requires=[
           'pyperclip',
           'requests',
+          'unidecode',
       ],
       scripts=['bin/easy_tst'],
      )
