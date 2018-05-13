@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+from __future__ import print_function
+import sys
+
+from easy_tst import tst_wrapper, easy_config, easy_clipboard
+
+def config_wizard():
+    name = raw_input('Name: ')
+    root = raw_input('Root: ')
+    mat = raw_input('Mat: ')
+    sub = raw_input('Subdirs? ')
+    easy_config.store(root, name, mat, sub)
+
+# config_wizard()
+args = sys.argv
+
+if args[1] == 'watch':
+    easy_clipboard.watch_mode()
+else:
+    tst_wrapper.full_checkout(args[1])
