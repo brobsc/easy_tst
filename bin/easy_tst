@@ -18,5 +18,7 @@ args = sys.argv
 
 if args[1] == 'watch':
     easy_clipboard.watch_mode()
+elif args[1] == 'wizard':
+    config_wizard()
 else:
     tst_wrapper.full_checkout(args[1])

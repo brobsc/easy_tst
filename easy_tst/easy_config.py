@@ -33,6 +33,26 @@ def store(tst_root, name, mat, subdirs):
         json.dump(config, f, indent=4, separators=(',', ': '))
 
 def load():
-    os.chdir(CONFIG_PATH)
-    with open('config.json', 'r') as f:
-        return (json.load(f))
+    conf = {}
+    try:
+        os.chdir(CONFIG_PATH)
+        with open('config.json', 'r') as f:
+            conf = (json.load(f))
+    except OSError, IOError:
+        # tst_wrapper tries to load config file on startup.
+        # As CONFIG_PATH has not been created yet,
+        # Dump a temp config file until wizard is ran for the first time
+        if not os.path.isdir(CONFIG_PATH): os.makedirs(CONFIG_PATH)
+        os.chdir(CONFIG_PATH)
+        config = {
+            'tst_root': 'tst_test/',
+            'name': 'Test',
+            'mat': '000',
+            'subdirs': 'y',
+        }
+        with open('config.json', 'w') as f:
+            json.dump(config, f, indent=4, separators=(',', ': '))
+        with open('config.json', 'r') as f:
+            conf = (json.load(f))
+    finally:
+        return conf
