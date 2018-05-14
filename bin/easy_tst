@@ -10,7 +10,7 @@ def config_wizard():
     name = raw_input('Name: ')
     root = raw_input('Root: ')
     mat = raw_input('Mat: ')
-    sub = raw_input('Subdirs? ')
+    sub = raw_input('Subdirs? (y/n) ')
     easy_config.store(root, name, mat, sub)
 
 # config_wizard()
