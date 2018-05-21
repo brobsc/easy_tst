@@ -1,6 +1,7 @@
 import re
 import pyperclip
 import tst_wrapper
+import time
 
 # Hardcoded regex
 # Useless for now
@@ -23,6 +24,7 @@ def checkout_from_clipboard():
 
 
 def watch_mode():
+    print('Starting watch mode.')
     cv = pyperclip.paste()
     old = ''
     try:
@@ -34,6 +36,7 @@ def watch_mode():
             if cv != old:
                 print('Trying to checkout: "{}"'.format(cv))
                 checkout_from_clipboard()
+            time.sleep(0.1)
     except (KeyboardInterrupt):
         print('Closing watch mode...')
         pass
