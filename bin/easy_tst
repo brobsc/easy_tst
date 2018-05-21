@@ -15,10 +15,16 @@ def config_wizard():
 
 # config_wizard()
 args = sys.argv
+wizard_ran = False
 
-if args[1] == 'watch':
+if easy_config.load()['name'] == 'Test':
+  print('Empty settings. Running wizard...')
+  wizard_ran = True
+  config_wizard()
+
+if len(args) == 1 or args[1] == 'watch':
     easy_clipboard.watch_mode()
-elif args[1] == 'wizard':
+elif args[1] == 'wizard' and not wizard_ran:
     config_wizard()
 else:
     tst_wrapper.full_checkout(args[1])
