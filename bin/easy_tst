@@ -7,6 +7,7 @@ import sys
 from easy_tst import tst_wrapper, easy_config, easy_clipboard
 
 
+# Collect settings data from the user
 def config_wizard():
     name = raw_input('Name: ')
     root = raw_input('Root: ')
@@ -15,15 +16,17 @@ def config_wizard():
     easy_config.store(root, name, mat, sub)
 
 
-# config_wizard()
+# Collect args from command line
 args = sys.argv
-wizard_ran = False
 
+# Test if config_wizard already ran and if not run wizard
+wizard_ran = False
 if easy_config.load()['name'] == 'Test':
     print('Empty settings. Running wizard...')
     wizard_ran = True
     config_wizard()
 
+# Define which mode will run
 if len(args) == 1 or args[1] == 'watch':
     easy_clipboard.watch_mode()
 elif args[1] == 'wizard' and not wizard_ran:
