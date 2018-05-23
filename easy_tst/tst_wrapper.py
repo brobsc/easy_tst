@@ -44,14 +44,14 @@ def checkout(code):
 
 
 # Creates a python file for the exercise
-def create_exercise_file(name, label, path):
+def create_exercise_file(name, label, path, code):
     # Add an extension to the file
     name += '.py'
     os.chdir(path)
 
-    # Writes the label in the header function
+    # Writes the header in the file
     with open(name, 'a') as f:
-        f.write(header(label))
+        f.write(header(label, code))
 
     # Get the full name of the exercise and return it
     full_name = '{}{}'.format(path, name)
@@ -75,7 +75,7 @@ def full_checkout(code):
     # Checkout and creates a python exercise file
     print('Checking out "{}": "{}"'.format(code, label))
     path = checkout(code)
-    full_path = create_exercise_file(name, label, path)
+    full_path = create_exercise_file(name, label, path, code)
 
     # Confirmation print and return full path of the exercise
     print('Checkout on {} done. Path is: {}'.format(code, full_path))
@@ -102,8 +102,26 @@ def get_exercise_stats(code):
     return exercise
 
 
+# Get formatted unit from checkout code
+def get_unit(code):
+    # Get raw unit from exercise
+    ex = get_exercise_stats(code)
+    unit_raw = ex['unit'].encode('utf-8')
+    unit = ''
+
+    # Get unit number from unit_raw
+    for num in unit_raw:
+        if num in '0123456789':
+            unit += num
+    # Format in two chars
+    unit = unit.zfill(2)
+
+    # Return unit from exercise
+    return unit
+
+
 # Defines a header in the exercise python file with info about the exercise
-def header(label):
+def header(label, code):
     result = '''# coding: utf-8
 
 ##{:44}##
@@ -119,7 +137,7 @@ def header(label):
            'Nome: ' + config['name'],
            'Matrícula: ' + config['mat'],
            'Atividade: ' + label,
-           'Unidade: ',
+           'Unidade: ' + get_unit(code),
            '#' * 44
            )
     return result
