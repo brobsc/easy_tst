@@ -1,12 +1,7 @@
-import re
 import pyperclip
 import tst_wrapper
 import time
 
-# Hardcoded regex
-# Useless for now
-# REGEX_STRING = '.*@ccc\.ufcg\.edu\.br\n*(.*)(?:\n.*ndo\.\.\.)*\n+(.*)'
-# Get contents from clipboard
 
 def checkout_from_clipboard():
     cv = pyperclip.paste()
@@ -26,7 +21,6 @@ def checkout_from_clipboard():
 def watch_mode():
     print('Starting watch mode.')
     cv = pyperclip.paste()
-    old = ''
     try:
         while True:
             old = cv
@@ -37,7 +31,6 @@ def watch_mode():
                 print('Trying to checkout: "{}"'.format(cv))
                 checkout_from_clipboard()
             time.sleep(0.1)
-    except (KeyboardInterrupt):
+    except KeyboardInterrupt:
         print('Closing watch mode...')
         pass
-
