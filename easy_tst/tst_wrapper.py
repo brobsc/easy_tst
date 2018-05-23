@@ -13,24 +13,25 @@ import easy_config
 
 config = easy_config.load()
 
-def header(label):
-    # 50 '#'
-    result = '''##################################################
-# coding: utf-8                                  #
-# Prog1 {:40} #
-# Nome: {:40} #
-# Matricula: {:35} #
-# {:46} #
-# {:^47} #
-# {:46} #
-##################################################
 
-'''.format(' ',
-           config['name'],
-           config['mat'],
-           ' ',
-           label,
-           ' '
+def header(label):
+    result = '''# coding: utf-8
+     
+##{:44}##
+# {:46} #
+# {:44} #
+# {:44} #
+# {:44} #
+# {:44} #
+##{:44}##
+
+'''.format( '#' * 44,
+            'Disciplina: Programação 01 - 2018.1',
+            'Nome: ' + config['name'],
+            'Matrícula: ' + config['mat'],
+            'Atividade: ' + label,
+            'Unidade: ',
+            '#' * 44
            )
     return result
 
