@@ -1,6 +1,8 @@
+# coding: utf-8
+
 import pyperclip
-import tst_wrapper
 import time
+import tst_wrapper
 
 
 # Do the checkout from what is in the clipboard
