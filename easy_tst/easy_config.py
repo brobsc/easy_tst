@@ -5,11 +5,10 @@ import json
 
 CONFIG_PATH = os.path.expanduser('~/.easy_tst/')
 
+
 def auth_key():
     tst_path = os.path.expanduser('~/.tst/')
     os.chdir(tst_path)
-    config = ''
-
     with open('config.json', 'r') as f:
         config = json.load(f)
 
@@ -17,7 +16,8 @@ def auth_key():
 
 
 def store(tst_root, name, mat, subdirs):
-    if tst_root[-1] != '/': tst_root += '/'
+    if tst_root[-1] != '/':
+        tst_root += '/'
 
     config = {
         'tst_root': tst_root,
@@ -26,11 +26,13 @@ def store(tst_root, name, mat, subdirs):
         'subdirs': subdirs
     }
 
-    if not os.path.isdir(CONFIG_PATH): os.makedirs(CONFIG_PATH)
+    if not os.path.isdir(CONFIG_PATH):
+        os.makedirs(CONFIG_PATH)
     os.chdir(CONFIG_PATH)
 
     with open('config.json', 'w') as f:
         json.dump(config, f, indent=4, separators=(',', ': '))
+
 
 def load():
     conf = {}
@@ -38,11 +40,12 @@ def load():
         os.chdir(CONFIG_PATH)
         with open('config.json', 'r') as f:
             conf = (json.load(f))
-    except OSError, IOError:
+    except OSError or IOError:
         # tst_wrapper tries to load config file on startup.
         # As CONFIG_PATH has not been created yet,
         # Dump a temp config file until wizard is ran for the first time
-        if not os.path.isdir(CONFIG_PATH): os.makedirs(CONFIG_PATH)
+        if not os.path.isdir(CONFIG_PATH):
+            os.makedirs(CONFIG_PATH)
         os.chdir(CONFIG_PATH)
         config = {
             'tst_root': 'tst_test/',
