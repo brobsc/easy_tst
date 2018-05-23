@@ -3,22 +3,30 @@
 import os
 import json
 
+# Define the configuration path of easy_tst
 CONFIG_PATH = os.path.expanduser('~/.easy_tst/')
 
 
+# Get the auth key of the user
 def auth_key():
+    # Define path to the tst config.json file
     tst_path = os.path.expanduser('~/.tst/')
     os.chdir(tst_path)
+    # Reads config.json file
     with open('config.json', 'r') as f:
         config = json.load(f)
 
+    # Return access code
     return config['access_token']
 
 
+# Store settings of the user
 def store(tst_root, name, mat, subdirs):
+    # Make the tst_root a directory valid value
     if tst_root[-1] != '/':
         tst_root += '/'
 
+    # Defines configuration
     config = {
         'tst_root': tst_root,
         'name': name,
@@ -26,24 +34,28 @@ def store(tst_root, name, mat, subdirs):
         'subdirs': subdirs
     }
 
+    # Garants the existence of configuration path
     if not os.path.isdir(CONFIG_PATH):
         os.makedirs(CONFIG_PATH)
     os.chdir(CONFIG_PATH)
 
+    # Writes in the config.json file the settings
     with open('config.json', 'w') as f:
         json.dump(config, f, indent=4, separators=(',', ': '))
 
 
+# Loads the settings of the config.json file
 def load():
+    # Create a dictionary for the configuration
     conf = {}
+
+    # Try to load config.json and if not created yet, create a temp config file
     try:
         os.chdir(CONFIG_PATH)
         with open('config.json', 'r') as f:
             conf = (json.load(f))
     except OSError or IOError:
-        # tst_wrapper tries to load config file on startup.
-        # As CONFIG_PATH has not been created yet,
-        # Dump a temp config file until wizard is ran for the first time
+        # Store function with raw default info
         if not os.path.isdir(CONFIG_PATH):
             os.makedirs(CONFIG_PATH)
         os.chdir(CONFIG_PATH)
@@ -58,4 +70,5 @@ def load():
         with open('config.json', 'r') as f:
             conf = (json.load(f))
     finally:
+        # Returns the configuration dictionary
         return conf
