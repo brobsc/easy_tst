@@ -125,7 +125,7 @@ def header(label, code):
     result = '''# coding: utf-8
 
 ##{:44}##
-# {:44} #
+# {:46} #
 # {:44} #
 # {:44} #
 # {:44} #
@@ -140,9 +140,11 @@ def header(label, code):
            'Unidade: ' + get_unit(code),
            '#' * 44
            )
+<<<<<<< HEAD
     # Encode is needed because of accents on Programação and Matrícula
     return result.encode('utf-8')
-
+=======
+    return result
 
 def is_logged_in():
     # FIXME: Duplicated code from get_exercise_stats
@@ -156,3 +158,4 @@ def is_logged_in():
 
     # Status code 400 means user is not logged in
     return r.status_code != 400
+>>>>>>> master
