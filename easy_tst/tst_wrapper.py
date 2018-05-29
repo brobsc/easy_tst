@@ -140,4 +140,5 @@ def header(label, code):
            'Unidade: ' + get_unit(code),
            '#' * 44
            )
-    return result
+    # Encode is needed because of accents on Programação and Matrícula
+    return result.encode('utf-8')
