@@ -24,10 +24,70 @@ def auth_key():
 
 # Collect settings data from the user
 def config_wizard():
-    name = raw_input('Name: ')
-    root = raw_input('Root: ')
-    mat = raw_input('Mat: ')
-    sub = raw_input('Subdirs? (y/n) ')
+    while True:
+        # Define user Name
+        config = load_config()
+
+        print('''- Current Settings:
+Name: {}
+Root: {}
+Mat: {}
+Subdirs: {} 
+
+Input your desired configuration. To maintain current settings use "---" as input.'''.format(config['name'],
+                                                                                             config['tst_root'],
+                                                                                             config['mat'],
+                                                                                             config['subdirs']))
+
+        name = raw_input('Name: ').decode('utf-8')
+        if name == '---':
+            name = config['name']
+
+        # Define Root dir
+        root = raw_input('Root: ').decode('utf-8')
+        if root == '---':
+            root = config['tst_root']
+
+        # Define user ID
+        mat = raw_input('Mat: ').decode('utf-8')
+        if mat == '---':
+            mat = config['mat']
+
+        # Define subdirs preference
+        while True:
+            sub = raw_input('Subdirs? (y/n) ').lower().decode('utf-8')
+            if sub == '---':
+                sub = config['subdirs']
+                break
+            elif sub != 'y' and sub != 'n':
+                print('Entered value different than Y and N')
+                print('Type just Y or N')
+            else:
+                break
+
+        print('''
+- Input Settings:
+Name: {}
+Root: {}
+Mat: {}
+Subdirs: {}'''.format(name, root, mat, sub))
+
+        while True:
+            decision = raw_input('Do you want to store these settings? (y/n) ').lower().decode('utf-8')
+            if decision == 'y':
+                break
+            elif decision == 'n':
+                break
+            else:
+                print('Entered value different than Y and N')
+                print('Type just Y or N')
+
+        if decision == 'y':
+            break
+        else:
+            print('''Ok! Input your data again.
+            ''')
+
     store_config(root, name, mat, sub)
 
 
