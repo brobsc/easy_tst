@@ -29,6 +29,12 @@ def checkout_from_clipboard():
 
 # Auto-do the checkout if the clipboard changes
 def watch_mode():
+    # Check login first.
+
+    if not tst_wrapper.is_logged_in():
+        print('Please log on tst (Run tst login).')
+        raise RuntimeError('Not logged in tst.')
+
     # Startup confirmation message and store clipboard
     print('Starting watch mode.')
     cv = pyperclip.paste()

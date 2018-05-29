@@ -142,3 +142,17 @@ def header(label, code):
            )
     # Encode is needed because of accents on Programação and Matrícula
     return result.encode('utf-8')
+
+
+def is_logged_in():
+    # FIXME: Duplicated code from get_exercise_stats
+    # Information for the request
+    auth = easy_config.auth_key()
+    auth_header = {'Authorization': 'Bearer {}'.format(auth)}
+    url = 'http://backend.tst-online.appspot.com/api'
+
+    # Request itself
+    r = requests.get(url, headers=auth_header)
+
+    # Status code 400 means user is not logged in
+    return r.status_code != 400
