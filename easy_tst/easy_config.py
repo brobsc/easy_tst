@@ -27,23 +27,23 @@ def config_wizard():
     # Define user Name
     config = load_config()
     name = raw_input('Name: ')
-    if name == '-':
+    if name == '---':
         name = config['name']
 
     # Define Root dir
     root = raw_input('Root: ')
-    if root == '-':
+    if root == '---':
         root = config['tst_root']
 
     # Define user ID
     mat = raw_input('Mat: ')
-    if mat == '-':
+    if mat == '---':
         mat = config['mat']
 
     # Define subdirs preference
     while True:
         sub = raw_input('Subdirs? (y/n) ').lower()
-        if sub == '-':
+        if sub == '---':
             sub = config['subdirs']
             break
         elif sub != 'y' and sub != 'n':
