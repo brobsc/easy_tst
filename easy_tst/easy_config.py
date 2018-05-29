@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import json
 import os
@@ -27,26 +27,26 @@ def config_wizard():
     # Define user Name
     config = load_config()
     name = raw_input('Name: ')
-    if name == '---':
+    if name == str('---'):
         name = config['name']
 
     # Define Root dir
     root = raw_input('Root: ')
-    if root == '---':
+    if root == str('---'):
         root = config['tst_root']
 
     # Define user ID
     mat = raw_input('Mat: ')
-    if mat == '---':
+    if mat == str('---'):
         mat = config['mat']
 
     # Define subdirs preference
     while True:
         sub = raw_input('Subdirs? (y/n) ').lower()
-        if sub == '---':
+        if sub == str('---'):
             sub = config['subdirs']
             break
-        elif sub != 'y' and sub != 'n':
+        elif sub != str('y') and sub != str('n'):
             print('Entered value different than Y and N')
             print('Type just Y or N')
         else:
