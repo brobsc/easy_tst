@@ -19,11 +19,16 @@ config = easy_config.load_config()
 # Takes a code and checkout a exercise and return path
 def checkout(code):
     # Define the tst_root path in the function
-    path = os.path.expanduser('~/') + config['tst_root']
+    path = os.path.expanduser('~/') + config['tst_root'] + 'unidade' + get_unit(code) + '/'
 
     # Create directory if it's not created already
     if not os.path.isdir(path):
         os.makedirs(path)
+
+    if not os.listdir(path):
+        num_ex = '01'
+    else:
+        num_ex = str(int(os.listdir(path)[-1][:2]) + 1)
 
     # Change directory to the path
     os.chdir(path)
@@ -40,7 +45,20 @@ def checkout(code):
         raise ValueError('Invalid checkout code.')
 
     # Returns the path
-    return '{}{}/'.format(path, code)
+    if config['subdirs'] == 'y':  # Subdirs option YES
+        # Get label, exercise number and returns path
+        ex = get_exercise_stats(code)
+        label = format_filename(ex['label'].encode('utf-8'))  # Label has to be encoded because of utf-8 accents
+
+        # Define final path
+        final_path = '{}{}-{}/'.format(path, num_ex, label).encode('utf-8')
+
+        # Rename directory
+        os.rename(path + code, final_path)
+
+        return final_path
+    elif config['subdirs'] == 'n':  # Subdirs option NO
+        return '{}{}/'.format(path, code)
 
 
 # Creates a python file for the exercise
