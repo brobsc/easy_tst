@@ -25,11 +25,6 @@ def checkout(code):
     if not os.path.isdir(path):
         os.makedirs(path)
 
-    if not os.listdir(path):
-        num_ex = '01'
-    else:
-        num_ex = str(int(os.listdir(path)[-1][:2]) + 1)
-
     # Change directory to the path
     os.chdir(path)
 
@@ -51,12 +46,13 @@ def checkout(code):
         label = format_filename(ex['label'].encode('utf-8'))  # Label has to be encoded because of utf-8 accents
 
         # Define final path
-        final_path = '{}{}-{}/'.format(path, num_ex, label).encode('utf-8')
+        final_path = '{}{}/'.format(path, label).encode('utf-8')
 
         # Rename directory
-        os.rename(path + code, final_path)
-
+        if not os.path.isdir(final_path):
+            os.rename(path + code, final_path)
         return final_path
+
     elif config['subdirs'] == 'n':  # Subdirs option NO
         return '{}{}/'.format(path, code)
 
@@ -67,12 +63,14 @@ def create_exercise_file(name, label, path, code):
     name += '.py'
     os.chdir(path)
 
-    # Writes the header in the file
-    with open(name, 'a') as f:
-        f.write(header(label, code))
-
     # Get the full name of the exercise and return it
     full_name = '{}{}'.format(path, name)
+
+    # Writes the header in the file
+    if is_zero_file(full_name):
+        with open(name, 'a') as f:
+            f.write(header(label, code))
+
     return full_name
 
 
@@ -96,7 +94,8 @@ def full_checkout(code):
     full_path = create_exercise_file(name, label, path, code)
 
     # Confirmation print and return full path of the exercise
-    print('Checkout on {} done. Path is: {}'.format(code, full_path))
+    print('''Checkout on {} done.Path is: 
+{}'''.format(code, full_path))
     return full_path
 
 
@@ -174,3 +173,8 @@ def is_logged_in():
 
     # Status code 400 means user is not logged in
     return r.status_code != 400
+
+
+# Check if a file is empty
+def is_zero_file(fpath):
+    return not (os.path.isfile(fpath) and os.path.getsize(fpath) > 0)
