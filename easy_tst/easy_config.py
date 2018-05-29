@@ -26,27 +26,27 @@ def auth_key():
 def config_wizard():
     # Define user Name
     config = load_config()
-    name = raw_input('Name: ')
-    if name == str('---'):
+    name = raw_input('Name: ').decode('utf-8')
+    if name == '---':
         name = config['name']
 
     # Define Root dir
-    root = raw_input('Root: ')
-    if root == str('---'):
+    root = raw_input('Root: ').decode('utf-8')
+    if root == '---':
         root = config['tst_root']
 
     # Define user ID
-    mat = raw_input('Mat: ')
-    if mat == str('---'):
+    mat = raw_input('Mat: ').decode('utf-8')
+    if mat == '---':
         mat = config['mat']
 
     # Define subdirs preference
     while True:
-        sub = raw_input('Subdirs? (y/n) ').lower()
-        if sub == str('---'):
+        sub = raw_input('Subdirs? (y/n) ').lower().decode('utf-8')
+        if sub == '---':
             sub = config['subdirs']
             break
-        elif sub != str('y') and sub != str('n'):
+        elif sub != 'y' and sub != 'n':
             print('Entered value different than Y and N')
             print('Type just Y or N')
         else:
