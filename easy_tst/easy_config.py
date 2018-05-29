@@ -24,10 +24,34 @@ def auth_key():
 
 # Collect settings data from the user
 def config_wizard():
+    # Define user Name
+    config = load_config()
     name = raw_input('Name: ')
+    if name == '-':
+        name = config['name']
+
+    # Define Root dir
     root = raw_input('Root: ')
+    if root == '-':
+        root = config['tst_root']
+
+    # Define user ID
     mat = raw_input('Mat: ')
-    sub = raw_input('Subdirs? (y/n) ')
+    if mat == '-':
+        mat = config['mat']
+
+    # Define subdirs preference
+    while True:
+        sub = raw_input('Subdirs? (y/n) ').lower()
+        if sub == '-':
+            sub = config['subdirs']
+            break
+        elif sub != 'y' and sub != 'n':
+            print('Entered value different than Y and N')
+            print('Type just Y or N')
+        else:
+            break
+
     store_config(root, name, mat, sub)
 
 
