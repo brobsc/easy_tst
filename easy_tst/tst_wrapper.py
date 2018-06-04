@@ -19,8 +19,10 @@ config = easy_config.load_config()
 # Takes a code and checkout a exercise and return path
 def checkout(code):
     # Define the tst_root path in the function
-    path = os.path.expanduser('~/') + config['tst_root']
-
+    if config['subdirs'] == 'y':
+        path = os.path.expanduser('~/') + config['tst_root'] + 'unidade' + get_unit(code) + '/'
+    else:
+        path = os.path.expanduser('~/') + config['tst_root']
     # Create directory if it's not created already
     if not os.path.isdir(path):
         os.makedirs(path)
@@ -40,7 +42,21 @@ def checkout(code):
         raise ValueError('Invalid checkout code.')
 
     # Returns the path
-    return '{}{}/'.format(path, code)
+    if config['subdirs'] == 'y':  # Subdirs option YES
+        # Get label, exercise number and returns path
+        ex = get_exercise_stats(code)
+        label = format_filename(ex['label'].encode('utf-8'))  # Label has to be encoded because of utf-8 accents
+
+        # Define final path
+        final_path = '{}{}/'.format(path, label).encode('utf-8')
+
+        # Rename directory
+        if not os.path.isdir(final_path):
+            os.rename(path + code, final_path)
+        return final_path
+
+    elif config['subdirs'] == 'n':  # Subdirs option NO
+        return '{}{}/'.format(path, code)
 
 
 # Creates a python file for the exercise
@@ -49,12 +65,14 @@ def create_exercise_file(name, label, path, code):
     name += '.py'
     os.chdir(path)
 
-    # Writes the header in the file
-    with open(name, 'a') as f:
-        f.write(header(label, code))
-
     # Get the full name of the exercise and return it
     full_name = '{}{}'.format(path, name)
+
+    # Writes the header in the file
+    if is_zero_file(full_name):
+        with open(name, 'a') as f:
+            f.write(header(label, code))
+
     return full_name
 
 
@@ -78,7 +96,8 @@ def full_checkout(code):
     full_path = create_exercise_file(name, label, path, code)
 
     # Confirmation print and return full path of the exercise
-    print('Checkout on {} done. Path is: {}'.format(code, full_path))
+    print('''Checkout on {} done.Path is: 
+{}'''.format(code, full_path))
     return full_path
 
 
@@ -156,3 +175,8 @@ def is_logged_in():
 
     # Status code 400 means user is not logged in
     return r.status_code != 400
+
+
+# Check if a file is empty
+def is_zero_file(fpath):
+    return not (os.path.isfile(fpath) and os.path.getsize(fpath) > 0)
