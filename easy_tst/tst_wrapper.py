@@ -19,7 +19,7 @@ config = easy_config.load_config()
 # Takes a code and checkout a exercise and return path
 def checkout(code):
     # Define the tst_root path in the function
-    path = os.path.expanduser('~/') + config['tst_root'] + 'unidade' + get_unit(code) + '/'
+    path = os.path.expanduser('~/') + config['tst_root']
 
     # Create directory if it's not created already
     if not os.path.isdir(path):
@@ -46,7 +46,7 @@ def checkout(code):
         label = format_filename(ex['label'].encode('utf-8'))  # Label has to be encoded because of utf-8 accents
 
         # Define final path
-        final_path = '{}{}/'.format(path, label).encode('utf-8')
+        final_path = '{}/{}{}/{}/'.format(path, 'unidade', get_unit(code), label).encode('utf-8')
 
         # Rename directory
         if not os.path.isdir(final_path):
