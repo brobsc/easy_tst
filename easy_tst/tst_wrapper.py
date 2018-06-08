@@ -103,13 +103,7 @@ def full_checkout(ex):
 
 # Gets by request an dictionary with information about the exercise
 def get_exercise_stats(code):
-    # Information for the request
-    auth = easy_config.auth_key()
-    auth_header = {'Authorization': 'Bearer {}'.format(auth)}
-    url = 'http://backend.tst-online.appspot.com/api'
-
-    # Request itself
-    r = requests.get(url, headers=auth_header)
+    r = request_to_tst()
 
     # Check login in tst
     if r.status_code == 400:
@@ -162,17 +156,19 @@ def header(label, code):
     return result.encode('utf-8')
 
 
-def is_logged_in():
-    # FIXME: Duplicated code from get_exercise_stats
-    # Information for the request
+def request_to_tst():
     auth = easy_config.auth_key()
     auth_header = {'Authorization': 'Bearer {}'.format(auth)}
     url = 'http://backend.tst-online.appspot.com/api'
 
     # Request itself
-    r = requests.get(url, headers=auth_header)
+    response = requests.get(url, headers=auth_header)
 
+    return response
+
+def is_logged_in():
     # Status code 400 means user is not logged in
+    r = request_to_tst()
     return r.status_code != 400
 
 
