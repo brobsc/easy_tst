@@ -6,6 +6,7 @@ import pyperclip
 import time
 import tst_wrapper
 
+CACHE = {}
 
 # Do the checkout from what is in the clipboard
 def checkout_from_clipboard():
@@ -21,7 +22,7 @@ def checkout_from_clipboard():
     else:
         # Try checkout with code
         try:
-            current_exercise = tst_wrapper.get_exercise_stats(cv)
+            current_exercise = tst_wrapper.get_exercise_stats(cv, CACHE)
             tst_wrapper.full_checkout(current_exercise)
         except IndexError:
             print('"{}" is not a valid code.'.format(cv))
@@ -30,8 +31,15 @@ def checkout_from_clipboard():
 # Auto-do the checkout if the clipboard changes
 def watch_mode():
     # Check login first.
+    # FIXME: Don't use global variable. Currently a workaround
+    global CACHE
 
-    if not tst_wrapper.is_logged_in():
+    r = tst_wrapper.request_to_tst()
+    CACHE = r.json()
+
+    logged_in = (r.status_code != 400)
+
+    if not logged_in:
         print('Please log on tst (Run tst login).')
         raise RuntimeError('Not logged in tst.')
 

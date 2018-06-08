@@ -102,7 +102,16 @@ def full_checkout(ex):
 
 
 # Gets by request an dictionary with information about the exercise
-def get_exercise_stats(code):
+def get_exercise_stats(code, response):
+    # Try to get from response first
+    exercise = [e for e in response['assignments'] if e['checkout_name'] == code]
+
+    if len(exercise) == 1:
+        print('Exercise found on cache')
+        return exercise[0]
+
+    # If its not on cache, update current assignements
+
     r = request_to_tst()
 
     # Check login in tst
