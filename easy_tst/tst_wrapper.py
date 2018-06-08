@@ -60,7 +60,9 @@ def checkout(ex):
 
 
 # Creates a python file for the exercise
-def create_exercise_file(name, label, path, code):
+def create_exercise_file(ex, path):
+    name, label = ex['name'], ex['label'].encode('utf-8')  # Label has to be encoded because of utf-8 accents
+
     # Add an extension to the file
     name += '.py'
     os.chdir(path)
@@ -71,7 +73,7 @@ def create_exercise_file(name, label, path, code):
     # Writes the header in the file
     if is_zero_file(full_name):
         with open(name, 'a') as f:
-            f.write(header(label, code))
+            f.write(header(ex))
 
     return full_name
 
@@ -86,28 +88,25 @@ def format_filename(astr):
 
 # Do the checkout
 def full_checkout(ex):
-    # Gets info about the exercise
-    name, label = ex['name'], ex['label'].encode('utf-8')  # Label has to be encoded because of utf-8 accents
-    code = ex['checkout_name']
+    label, code = ex['checkout_name'], ex['label']
 
     # Checkout and creates a python exercise file
     print('Checking out "{}": "{}"'.format(code, label))
     path = checkout(ex)
-    full_path = create_exercise_file(name, label, path, code)
+    full_path = create_exercise_file(ex, path)
 
     # Confirmation print and return full path of the exercise
-    print('''Checkout on {} done.Path is:
+    print('''Checkout on "{}" done. Path is:
 {}'''.format(code, full_path))
     return full_path
 
 
 # Gets by request an dictionary with information about the exercise
-def get_exercise_stats(code, response):
+def get_exercise_stats(code, cached_response):
     # Try to get from response first
-    exercise = [e for e in response['assignments'] if e['checkout_name'] == code]
+    exercise = [e for e in cached_response['assignments'] if e['checkout_name'] == code]
 
     if len(exercise) == 1:
-        print('Exercise found on cache')
         return exercise[0]
 
     # If its not on cache, update current assignements
@@ -142,7 +141,8 @@ def get_unit(ex):
 
 
 # Defines a header in the exercise python file with info about the exercise
-def header(label, code):
+def header(ex):
+    label = ex['label']
     result = '''# coding: utf-8
 
 ##{:44}##
@@ -158,7 +158,7 @@ def header(label, code):
            'Nome: ' + config['name'],
            'Matrícula: ' + config['mat'],
            'Atividade: ' + label,
-           'Unidade: ' + get_unit(code),
+           'Unidade: ' + get_unit(ex),
            '#' * 44
            )
     # Encode is needed because of accents on Programação and Matrícula
@@ -174,11 +174,6 @@ def request_to_tst():
     response = requests.get(url, headers=auth_header)
 
     return response
-
-def is_logged_in():
-    # Status code 400 means user is not logged in
-    r = request_to_tst()
-    return r.status_code != 400
 
 
 # Check if a file is empty
