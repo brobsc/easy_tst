@@ -85,10 +85,10 @@ def format_filename(astr):
 
 
 # Do the checkout
-def full_checkout(code):
+def full_checkout(ex):
     # Gets info about the exercise
-    ex = get_exercise_stats(code)
     name, label = ex['name'], ex['label'].encode('utf-8')  # Label has to be encoded because of utf-8 accents
+    code = ex['checkout_name']
 
     # Checkout and creates a python exercise file
     print('Checking out "{}": "{}"'.format(code, label))
@@ -96,7 +96,7 @@ def full_checkout(code):
     full_path = create_exercise_file(name, label, path, code)
 
     # Confirmation print and return full path of the exercise
-    print('''Checkout on {} done.Path is: 
+    print('''Checkout on {} done.Path is:
 {}'''.format(code, full_path))
     return full_path
 

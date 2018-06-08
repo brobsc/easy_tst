@@ -21,8 +21,8 @@ def checkout_from_clipboard():
     else:
         # Try checkout with code
         try:
-            tst_wrapper.get_exercise_stats(cv)
-            tst_wrapper.full_checkout(cv)
+            current_exercise = tst_wrapper.get_exercise_stats(cv)
+            tst_wrapper.full_checkout(current_exercise)
         except IndexError:
             print('"{}" is not a valid code.'.format(cv))
 
