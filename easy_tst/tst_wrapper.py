@@ -17,10 +17,11 @@ config = easy_config.load_config()
 
 
 # Takes a code and checkout a exercise and return path
-def checkout(code):
+def checkout(ex):
+    code = ex['checkout_name']
     # Define the tst_root path in the function
     if config['subdirs'] == 'y':
-        path = os.path.expanduser('~/') + config['tst_root'] + 'unidade' + get_unit(code) + '/'
+        path = os.path.expanduser('~/') + config['tst_root'] + 'unidade' + get_unit(ex) + '/'
     else:
         path = os.path.expanduser('~/') + config['tst_root']
     # Create directory if it's not created already
@@ -44,7 +45,6 @@ def checkout(code):
     # Returns the path
     if config['subdirs'] == 'y':  # Subdirs option YES
         # Get label, exercise number and returns path
-        ex = get_exercise_stats(code)
         label = format_filename(ex['label'].encode('utf-8'))  # Label has to be encoded because of utf-8 accents
 
         # Define final path
@@ -92,7 +92,7 @@ def full_checkout(ex):
 
     # Checkout and creates a python exercise file
     print('Checking out "{}": "{}"'.format(code, label))
-    path = checkout(code)
+    path = checkout(ex)
     full_path = create_exercise_file(name, label, path, code)
 
     # Confirmation print and return full path of the exercise
@@ -122,9 +122,8 @@ def get_exercise_stats(code):
 
 
 # Get formatted unit from checkout code
-def get_unit(code):
+def get_unit(ex):
     # Get raw unit from exercise
-    ex = get_exercise_stats(code)
     unit_raw = ex['unit'].encode('utf-8')
     unit = ''
 
