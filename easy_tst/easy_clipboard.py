@@ -8,6 +8,7 @@ import tst_wrapper
 
 CACHE = {}
 
+
 # Do the checkout from what is in the clipboard
 def checkout_from_clipboard():
     # Get what is in clipboard and store it in cv variable
@@ -56,7 +57,7 @@ def watch_mode():
 
             # Run checkout from clipboard when clipboard changes
             if cv != old:
-                print('Trying to checkout: "{}"'.format(cv))
+                print('Trying to checkout: "{}"'.format(cv[:4]))
                 checkout_from_clipboard()
             time.sleep(0.1)
     except KeyboardInterrupt:

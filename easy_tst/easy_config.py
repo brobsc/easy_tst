@@ -5,6 +5,7 @@ from __future__ import print_function, unicode_literals
 import json
 import os
 
+
 # Define the configuration path of easy_tst
 CONFIG_PATH = os.path.expanduser('~/.easy_tst/')
 
@@ -44,9 +45,11 @@ Input your desired configuration. To maintain current settings use "---" as inpu
             name = config['name']
 
         # Define Root dir
-        root = raw_input('Root: ').decode('utf-8')
-        if root == '---':
-            root = config['tst_root']
+        tst_root = raw_input('Root: ').decode('utf-8')
+        if tst_root == '---':
+            tst_root = config['tst_root']
+        elif tst_root[-1] != '/':
+            tst_root += '/'
 
         # Define user ID
         mat = raw_input('Mat: ').decode('utf-8')
@@ -70,7 +73,7 @@ Input your desired configuration. To maintain current settings use "---" as inpu
 Name: {}
 Root: {}
 Mat: {}
-Subdirs: {}'''.format(name, root, mat, sub))
+Subdirs: {}'''.format(name, tst_root, mat, sub))
 
         while True:
             decision = raw_input('Do you want to store these settings? (y/n) ').lower().decode('utf-8')
@@ -87,59 +90,49 @@ Subdirs: {}'''.format(name, root, mat, sub))
         else:
             print('''Ok! Input your data again.
             ''')
-
-    store_config(root, name, mat, sub)
-
-
-# Loads the settings of the config.json file
-def load_config():
-    # Create a dictionary for the configuration
-    conf = {}
-
-    # Try to load config.json and if not created yet, create a temp config file
-    try:
-        os.chdir(CONFIG_PATH)
-        with open('config.json', 'r') as f:
-            conf = (json.load(f))
-    except OSError or IOError:
-        # Store_config function with raw default info
-        if not os.path.isdir(CONFIG_PATH):
-            os.makedirs(CONFIG_PATH)
-        os.chdir(CONFIG_PATH)
-        config = {
-            'tst_root': 'tst_test/',
-            'name': 'Test',
-            'mat': '000',
-            'subdirs': 'y',
-        }
-        with open('config.json', 'w') as f:
-            json.dump(config, f, indent=4, separators=(',', ': '))
-        with open('config.json', 'r') as f:
-            conf = (json.load(f))
-    finally:
-        # Returns the configuration dictionary
-        return conf
-
-
-# Store settings of the user
-def store_config(tst_root, name, mat, subdirs):
-    # Make the tst_root a directory valid value
-    if tst_root[-1] != '/':
-        tst_root += '/'
-
-    # Defines configuration
     config = {
         'tst_root': tst_root,
         'name': name,
         'mat': mat,
-        'subdirs': subdirs
+        'subdirs': sub
     }
 
-    # Garants the existence of configuration path
+    store_config(config)
+
+
+def load_config():
+    conf = {}
     if not os.path.isdir(CONFIG_PATH):
         os.makedirs(CONFIG_PATH)
     os.chdir(CONFIG_PATH)
 
-    # Writes in the config.json file the settings
+    try:
+        os.chdir(CONFIG_PATH)
+        with open('config.json', 'r') as f:
+            conf = (json.load(f))
+    except IOError or OSError:
+        reset_config()
+        with open('config.json', 'r') as f:
+            conf = (json.load(f))
+    finally:
+        return conf
+
+
+def store_config(config):
+    if not os.path.isdir(CONFIG_PATH):
+        os.makedirs(CONFIG_PATH)
+    os.chdir(CONFIG_PATH)
+
     with open('config.json', 'w') as f:
         json.dump(config, f, indent=4, separators=(',', ': '))
+
+
+def reset_config():
+    config = {
+        'tst_root': 'tst_test/',
+        'name': 'Test',
+        'mat': '000',
+        'subdirs': 'y',
+    }
+
+    store_config(config)

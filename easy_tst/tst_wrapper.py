@@ -7,7 +7,7 @@ import os
 import subprocess
 import requests
 
-
+from shutil import rmtree
 from unidecode import unidecode
 
 
@@ -19,11 +19,13 @@ config = easy_config.load_config()
 # Takes a code and checkout a exercise and return path
 def checkout(ex):
     code = ex['checkout_name']
+
     # Define the tst_root path in the function
     if config['subdirs'] == 'y':
         path = os.path.expanduser('~/') + config['tst_root'] + 'unidade' + get_unit(ex) + '/'
     else:
         path = os.path.expanduser('~/') + config['tst_root']
+
     # Create directory if it's not created already
     if not os.path.isdir(path):
         os.makedirs(path)
@@ -45,7 +47,7 @@ def checkout(ex):
     # Returns the path
     if config['subdirs'] == 'y':  # Subdirs option YES
         # Get label, exercise number and returns path
-        label = format_filename(ex['label'].encode('utf-8'))  # Label has to be encoded because of utf-8 accents
+        label = format_filename(ex['label'])  # Label has to be encoded because of utf-8 accents
 
         # Define final path
         final_path = '{}{}/'.format(path, label).encode('utf-8')
@@ -53,6 +55,9 @@ def checkout(ex):
         # Rename directory
         if not os.path.isdir(final_path):
             os.rename(path + code, final_path)
+        else:
+            rmtree(path + code)
+
         return final_path
 
     elif config['subdirs'] == 'n':  # Subdirs option NO
