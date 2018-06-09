@@ -55,11 +55,25 @@ def checkout(ex):
         # Rename directory
         if not os.path.isdir(final_path):
             os.rename(path + code, final_path)
-        # FIXME: Erasing directory to update it. Currently a workaround
+        # FIXME: Erasing directory to update it. Currently a workaround.
         else:
-            rmtree(final_path)
-            os.rename(path + code, final_path)
+            print('''
+You already have a directory for this exercise with the following path:
+{}
 
+If you continue, this directory will be erased and replaced for a new one with files with the latest commit.'''.format(final_path))
+            while True:
+                decision = raw_input('Are you sure you want to proceed with this operation? (y/n) ').strip().lower()
+                if decision == 'y':
+                    rmtree(final_path)
+                    os.rename(path + code, final_path)
+                    break
+                elif decision == 'n':
+                    rmtree(path + code)
+                    break
+                else:
+                    print('Please, just type "y" or "n"')
+        print()
         return final_path
 
     elif config['subdirs'] == 'n':  # Subdirs option NO
