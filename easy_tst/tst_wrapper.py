@@ -55,8 +55,10 @@ def checkout(ex):
         # Rename directory
         if not os.path.isdir(final_path):
             os.rename(path + code, final_path)
+        # FIXME: Erasing directory to update it. Currently a workaround
         else:
-            rmtree(path + code)
+            rmtree(final_path)
+            os.rename(path + code, final_path)
 
         return final_path
 
