@@ -57,7 +57,7 @@ def watch_mode():
 
             # Run checkout from clipboard when clipboard changes
             if cv != old:
-                print('Trying to checkout: "{}"'.format(cv[:4]))
+                print('Trying to checkout: "{:4}..."'.format(cv[:4]).replace('\n',' '))
                 checkout_from_clipboard()
             time.sleep(0.1)
     except KeyboardInterrupt:
