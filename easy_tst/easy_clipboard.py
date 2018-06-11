@@ -50,14 +50,21 @@ def watch_mode():
 
     # Auto-checks changes in the clipboard and interrupt if KeyboardInterrupt
     try:
+        started = False
         while True:
             # Define old clipboard value
             old = cv
             cv = pyperclip.paste()
 
+
             # Run checkout from clipboard when clipboard changes
-            if cv != old:
-                print('Trying to checkout: "{:4}..."'.format(cv[:4]).replace('\n',' '))
+            if cv != old or not started:
+                if not started: started = True
+
+                if len(cv) > 4:
+                    print('Trying to checkout: "{}..."'.format(cv[:10]).replace('\n',' '))
+                else:
+                    print('Trying to checkout: "{}"'.format(cv))
                 checkout_from_clipboard()
             time.sleep(0.1)
     except KeyboardInterrupt:
