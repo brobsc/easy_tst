@@ -4,7 +4,7 @@
 from __future__ import print_function, unicode_literals
 import sys
 
-from easy_tst import easy_clipboard, easy_config, tst_wrapper
+from easy_tst import easy_clipboard, easy_config, tst_wrapper, __version__
 
 
 # Collect args from command line
@@ -18,9 +18,12 @@ if easy_config.load_config()['name'] == 'Test':
     easy_config.config_wizard()
 
 # Define which mode will run
-if len(args) == 1 or args[1] == 'watch':
+if len(args) == 1:
     easy_clipboard.watch_mode()
 elif args[1] == 'wizard' and not wizard_ran:
     easy_config.config_wizard()
+elif args[1] == '--version':
+    print(__version__.__version__)
 else:
-    tst_wrapper.full_checkout(args[1])
+    print('Invalid arguments "{}"... Running watcher: '.format(args[1:]))
+    easy_clipboard.watch_mode()

@@ -42,7 +42,7 @@ Use this to change your settings.
 
 ## Contributing
 
-When contributing to this repository, please first discuss the change you wish to make via a issue,
+When contributing to this repository, please first discuss the change you wish to make via an issue,
 email, or any other method with the owners of this repository before making a change.
 
 ### Pull Request Process

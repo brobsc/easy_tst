@@ -2,13 +2,16 @@
 
 from setuptools import setup
 
+execfile('easy_tst/__version__.py')
+
 setup(name='easy_tst',
-      version='0.0.1',
-      description='Easy Tst',
-      author='N',
-      author_email='n',
-      url='',
       packages=['easy_tst'],
+      version=__version__,
+      description='tst automatically',
+      author='Bruno Siqueira, Joao Espindula',
+      author_email='bruno.siqueira@ccc.ufcg.edu.br',
+      url='https://github.com/brobsc/easy_tst',
+      download_url = 'https://github.com/brobsc/easy_tst/archive/1.0.0.tar.gz',
       install_requires=[
           'pyperclip',
           'requests',
