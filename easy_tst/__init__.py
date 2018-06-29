@@ -1,3 +1,3 @@
-import easy_clipboard
-import easy_config
 import tst_wrapper
+import easy_watcher
+import easy_helper
