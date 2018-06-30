@@ -44,7 +44,7 @@ def watcher():
     except KeyboardInterrupt:
         # Stop confirmation message
         print('Closing watch mode...')
-        pass
+        return
 
 
 def main():

@@ -8,15 +8,17 @@ import json
 import requests
 import easy_helper
 
-from shutil import rmtree
-
 
 CACHE = {}
+EXERCISES_DIR = 'exercicios_tst'
 
 
-def checkout(exercise, code):
+def checkout(exercise):
+    code = exercise['checkout_name']
     # Define the tst_root path in the function
-    path = os.path.expanduser('~/') + 'exercicios-tst/' + easy_helper.format_unit(exercise) + '/'
+    path = os.path.join(os.path.expanduser('~/'),
+                        EXERCISES_DIR,
+                        easy_helper.format_unit(exercise))
 
     # Create directory if it's not created already
     if not os.path.isdir(path):
@@ -38,43 +40,29 @@ def checkout(exercise, code):
     if 'No object' in tst_out:
         raise ValueError('Invalid checkout code.')
 
-    return path
+    return os.path.join(path, code)
 
 
-def update_checkout(path, final_path, code):
-    # FIXME: Erasing directory to update it. Currently a workaround.
-    print('''
-You already have a directory for this exercise with the following path:
-{}
-    
-This directory will be erased and updated with the latest commit.'''.format(final_path))
-
-    while True:
-        decision = raw_input('Are you sure you want to proceed with this operation? (y/n) ').strip().lower()
-        if decision == 'y':
-            rmtree(final_path)
-            os.rename(path + code, final_path)
-            break
-        elif decision == 'n':
-            rmtree(path + code)
-            break
-        else:
-            print('Please, just type "y" or "n"')
-    print()
+def get_exercises():
+    # Return all exercises
+    global CACHE
+    result = CACHE or update_cache()
+    return result['assignments']
 
 
-def get_exercise_stats(code, cache):
-    # Try to get from response first
-    if cache != {}:
-        exercise = [e for e in cache['assignments'] if e['checkout_name'] == code]
+def get_exercise_stats(code):
+    exercises = get_exercises()
 
-        if len(exercise) == 1:
-            return exercise[0]
+    # Try to get from current cached exercises first
+    exercise = [e for e in exercises if e['checkout_name'] == code]
+
+    if len(exercise) == 1:
+        return exercise[0]
 
     # If its not on cache, update current assignments
-    cache = update_cache()
+    exercises = update_cache()['assignments']
 
-    exercise = [e for e in cache['assignments'] if e['checkout_name'] == code][0]
+    exercise = [e for e in exercises if e['checkout_name'] == code][0]
 
     return exercise
 
@@ -117,17 +105,17 @@ def update_cache():
 
 
 def main(code):
-
     global CACHE
 
-    exercise = get_exercise_stats(code, CACHE)
+    exercise = get_exercise_stats(code)
     if len(exercise) == 0:
         raise IndexError
     code, label, name = exercise['checkout_name'], exercise['label'], exercise['name']
 
     print('Checking out "{}": "{}"'.format(code, label))
-    original_path = checkout(exercise, code)
-    final_path = easy_helper.rename_directory(original_path, exercise, code)
+    original_path = checkout(exercise)
+    destination_path = easy_helper.exercise_path(exercise)
+    final_path = easy_helper.rename_directory(original_path, destination_path)
 
     student = {'name': CACHE['name'], 'email': CACHE['email']}
 

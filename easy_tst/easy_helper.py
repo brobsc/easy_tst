@@ -3,6 +3,8 @@
 from __future__ import print_function, unicode_literals
 
 import os
+import shutil
+
 import tst_wrapper
 
 
@@ -18,6 +20,14 @@ def create_exercise_file(name, path, exercise, student):
     if is_zero_file(path_python_file):
         with open(python_file, 'a') as f:
             f.write(header(exercise, student))
+
+
+def exercise_path(exercise):
+    tst_exercises = tst_wrapper.EXERCISES_DIR
+    return os.path.join(os.path.expanduser('~/'),
+                        tst_exercises,
+                        format_unit(exercise),
+                        exercise['name'])
 
 
 def format_unit(exercise):
@@ -75,14 +85,29 @@ def is_logged_in():
         raise RuntimeError('Not logged in tst.')
 
 
-def rename_directory(path, exercise, code):
-    # Define final path
-    final_path = '{}{}/'.format(path, exercise['name'])
-
+def rename_directory(base, destination):
     # Rename directory
-    if not os.path.isdir(final_path):
-        os.rename(path + code, final_path)
+    if not os.path.isdir(destination):
+        shutil.move(base, destination)
     else:
-        tst_wrapper.update_checkout(path, final_path, code)
+        # FIXME: Erasing directory to update it. Currently a workaround.
+        print('''
+You already have a directory for this exercise with the following path:
+{}
 
-    return final_path
+This directory will be erased and updated with the latest commit.'''.format(destination))
+
+        while True:
+            decision = raw_input('Are you sure you want to proceed with this operation? (y/n) ').strip().lower()
+            if decision == 'y':
+                shutil.rmtree(destination)
+                shutil.move(base, destination)
+                break
+            elif decision == 'n':
+                shutil.rmtree(base)
+                break
+            else:
+                print('Please, just type "y" or "n"')
+        print()
+
+    return destination
