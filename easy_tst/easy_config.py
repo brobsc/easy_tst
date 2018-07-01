@@ -112,6 +112,8 @@ def load_config():
             conf = (json.load(f))
     except IOError or OSError:
         reset_config()
+        print('Empty settings. Running wizard...')
+        config_wizard()
         with open('config.json', 'r') as f:
             conf = (json.load(f))
     finally:

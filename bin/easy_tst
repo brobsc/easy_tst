@@ -10,17 +10,10 @@ from easy_tst import easy_clipboard, easy_config, tst_wrapper, __version__
 # Collect args from command line
 args = sys.argv
 
-# Test if config_wizard already ran and if not run wizard
-wizard_ran = False
-if easy_config.load_config()['name'] == 'Test':
-    print('Empty settings. Running wizard...')
-    wizard_ran = True
-    easy_config.config_wizard()
-
 # Define which mode will run
 if len(args) == 1:
     easy_clipboard.watch_mode()
-elif args[1] == 'wizard' and not wizard_ran:
+elif args[1] == 'wizard':
     easy_config.config_wizard()
 elif args[1] == '--version':
     print(__version__.__version__)
