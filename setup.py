@@ -11,11 +11,10 @@ setup(name='easy_tst',
       author='Bruno Siqueira, Joao Espindula',
       author_email='bruno.siqueira@ccc.ufcg.edu.br',
       url='https://github.com/brobsc/easy_tst',
-      download_url = 'https://github.com/brobsc/easy_tst/archive/1.0.0.tar.gz',
+      download_url='https://github.com/brobsc/easy_tst/archive/1.0.0.tar.gz',
       install_requires=[
           'pyperclip',
           'requests',
-          'unidecode',
       ],
       scripts=['bin/easy_tst'],
-     )
+      )

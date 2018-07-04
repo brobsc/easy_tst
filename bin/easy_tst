@@ -2,28 +2,44 @@
 # coding: utf-8
 
 from __future__ import print_function, unicode_literals
+
 import sys
+import argparse
 
-from easy_tst import easy_clipboard, easy_config, tst_wrapper, __version__
+from easy_tst import easy_watcher, easy_organizer, __version__
 
 
-# Collect args from command line
-args = sys.argv
+# Argparser implementation
+parser = argparse.ArgumentParser(description='easy_tst')
+parser.add_argument('-v', '--version', action='version', version='easy_tst {}'.format(__version__.__version__))
 
-# Test if config_wizard already ran and if not run wizard
-wizard_ran = False
-if easy_config.load_config()['name'] == 'Test':
-    print('Empty settings. Running wizard...')
-    wizard_ran = True
-    easy_config.config_wizard()
 
-# Define which mode will run
-if len(args) == 1:
-    easy_clipboard.watch_mode()
-elif args[1] == 'wizard' and not wizard_ran:
-    easy_config.config_wizard()
-elif args[1] == '--version':
-    print(__version__.__version__)
-else:
-    print('Invalid arguments "{}"... Running watcher: '.format(args[1:]))
-    easy_clipboard.watch_mode()
+commands = parser.add_subparsers(help='commands', dest='command')
+
+commands.add_parser('watch',
+                    description='starts watch mode (default)',
+                    help='starts watch mode (default)')
+
+organizer = commands.add_parser('organize',
+                                description='organize tst directories',
+                                help='organize tst directories')
+
+organizer.add_argument('path', default='~/',
+                       nargs='?',
+                       help='set base path for organizer (default=HOME)')
+organizer.add_argument('-f', '--force',
+                       default=False, action='store_true',
+                       help='force execution without confirmation for every directory')
+
+
+# Set watch as default subparser
+if len(sys.argv) == 1:
+    sys.argv.append('watch')
+args = parser.parse_args()
+
+
+if args.command == 'watch':
+    easy_watcher.main()
+elif args.command == 'organize':
+    ask = not args.force
+    easy_organizer.main(ask, args.path)
