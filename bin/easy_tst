@@ -9,6 +9,7 @@ import argparse
 from easy_tst import easy_watcher, easy_organizer, __version__
 
 
+# Argparser implementation
 parser = argparse.ArgumentParser(description='easy_tst')
 parser.add_argument('-v', '--version', action='version', version='easy_tst {}'.format(__version__.__version__))
 
@@ -42,4 +43,3 @@ if args.command == 'watch':
 elif args.command == 'organize':
     ask = not args.force
     easy_organizer.main(ask, args.path)
-
