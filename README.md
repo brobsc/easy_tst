@@ -1,14 +1,15 @@
 # easy_tst
 
-easy_tst is a set of scripts that makes the use of tst easier by automatically doing the checkout and writing a header in the python file (see [daltonserey/tst](https://github.com/daltonserey/tst) for more information).
+easy_tst is a set of scripts that makes the use of tst easier (see [daltonserey/tst](https://github.com/daltonserey/tst) for more information).
 
 
 ## Dependencies
 
 Before installing easy_tst you will need: 
 
-1. Python 2.7: Refer to Google for how to install python2.7, or see [Python Website](https://www.python.org/downloads/release/python-2715/)
+1. [Python 2.7](https://www.python.org/downloads/release/python-2715/)
 2. [tst](https://github.com/daltonserey/tst)
+3. [pip](https://pip.pypa.io/en/stable/installing/)
 
 
 ## Installing
@@ -17,28 +18,42 @@ Before installing easy_tst you will need:
 pip install easy_tst
 ```
 
-## Usage
+## Modes
 
-Simply run:
+### Watcher
+This mode will automatically do the checkout with what is in your clipboard, organize the directory created by moving it to a padronized tst directory (exercicios_tst) that will be subdivided in units (exercicios_tst/unidadeXX). It will also change that directory name to the exercise's name, and create a python file with a header. Checkout will be tried whenever the clipboard changes.
+
+#### Usage
 
 ```sh
+easy_tst watch
+```
+or simply
+```
 easy_tst
 ```
+To stop watcher mode and exit easy_tst just press Ctrl + C (Keyboard Interrupt).
 
-This will start the wizard (on first execution) to configure your settings, and then start easy_tst watcher.
+### Organizer
+This mode will organize all your tst directories. It will identify a tst directory and do the same process of moving and renaming the directory that watcher does. It will ask if you are sure that you want to move that directory.
 
-While easy_tst is running, copy a valid checkout code and it will automatically perform a `tst checkout` on that code and move/rename its result according to your settings.
-
----
-
-Force wizard execution:
+#### Usage
 
 ```sh
-easy_tst wizard
+easy_tst organize
+```
+To force organizer to move all directories without confirmation, add `-f` (or `--force`)
+```sh
+easy_tst organize -f
 ```
 
-Use this to change your settings.
+### Help
+If you have any doubts, easy_tst has a built-in helper. To run it use `-h` as an argument.
 
+#### Example
+```sh
+easy_tst -h
+```
 
 ## Contributing
 
@@ -62,4 +77,3 @@ email, or any other method with the owners of this repository before making a ch
 ## License
 
 Distributed under the AGPL 3.0 license. See ``LICENSE`` for more information.
-
