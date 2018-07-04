@@ -5,12 +5,32 @@ from __future__ import print_function, unicode_literals
 
 import sys
 import argparse
+import logging
 
 from easy_tst import easy_watcher, easy_organizer, __version__
+
+from easy_tst.easy_logger import logger
 
 
 parser = argparse.ArgumentParser(description='easy_tst')
 parser.add_argument('-v', '--version', action='version', version='easy_tst {}'.format(__version__.__version__))
+parser.add_argument('-V', '--verbose', action='store_true',
+                    help='set verbose mode')
+
+# Start DEBUG mode early
+if '-V' in sys.argv or '--verbose' in sys.argv:
+    # handlers[0] refers to stream_handler
+    # ordered in the same way they were added
+    logger.handlers[0].setLevel(logging.DEBUG)
+    logger.debug('Visual DEBUG mode started')
+
+    # Remove debug argument
+    # Pass if already removed
+    try:
+        sys.argv.remove('-V')
+        sys.argv.remove('--verbose')
+    except:
+        pass
 
 
 commands = parser.add_subparsers(help='commands', dest='command')
@@ -30,12 +50,13 @@ organizer.add_argument('-f', '--force',
                        default=False, action='store_true',
                        help='force execution without confirmation for every directory')
 
-
 # Set watch as default subparser
 if len(sys.argv) == 1:
+    logger.debug('No arguments detected. Setting default to watch mode.')
     sys.argv.append('watch')
 args = parser.parse_args()
 
+logger.debug('args.command is set to "{}".'.format(args.command))
 
 if args.command == 'watch':
     easy_watcher.main()
