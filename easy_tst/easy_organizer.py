@@ -18,7 +18,7 @@ def clear_previous_line():
     sys.stdout.write("\033[K")  # Clear to the end of line
 
 def match_exercise(directory):
-    logger.debug('Trying to mach {} into an exercise'.format(directory))
+    logger.debug('Trying to match {} into an exercise'.format(directory))
     exercises = tst_wrapper.get_exercises()
     dot_tst = os.path.join(directory, '.tst')
     os.chdir(dot_tst)
