@@ -24,13 +24,10 @@ if '-V' in sys.argv or '--verbose' in sys.argv:
     logger.handlers[0].setLevel(logging.DEBUG)
     logger.debug('Visual DEBUG mode started')
 
-    # Remove debug argument
-    # Pass if already removed
-    try:
+    if '-V' in sys.argv:
         sys.argv.remove('-V')
+    else:
         sys.argv.remove('--verbose')
-    except:
-        pass
 
 
 commands = parser.add_subparsers(help='commands', dest='command')
