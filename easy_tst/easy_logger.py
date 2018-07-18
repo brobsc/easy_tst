@@ -27,7 +27,7 @@ class ColoredConsoleHandler(logging.StreamHandler):
             color = '\x1b[30;1m'  # pink
         else:  # NOTSET and anything else
             color = '\x1b[0m'  # normal
-        myrecord.msg = color + str(myrecord.msg) + '\x1b[0m'  # normal
+        myrecord.msg = '{}{}{}'.format(color, myrecord.msg, '\x1b[0m')  # normal
         logging.StreamHandler.emit(self, myrecord)
 
 dot_easy_tst = easy_helper.dot_easy_tst()

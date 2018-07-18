@@ -9,7 +9,7 @@ import errno
 
 import tst_wrapper
 
-logger = logging.getLogger('__main__')
+logger = logging.getLogger('easy_tst')
 
 def dot_easy_tst():
     # Better way taken from: https://stackoverflow.com/questions/600268/mkdir-p-functionality-in-python
