@@ -11,7 +11,7 @@ setup(name='easy_tst',
       author='Bruno Siqueira, Joao Espindula',
       author_email='bruno.siqueira@ccc.ufcg.edu.br',
       url='https://github.com/brobsc/easy_tst',
-      download_url='https://github.com/brobsc/easy_tst/archive/1.0.0.tar.gz',
+      download_url='https://github.com/brobsc/easy_tst/archive/{}.tar.gz'.format(__version__),
       install_requires=[
           'pyperclip',
           'requests',
