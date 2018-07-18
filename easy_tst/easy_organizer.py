@@ -48,7 +48,7 @@ def organize(directory, ask=True):
     if exercise == {}:
         logger.debug('Could not find exercise for "{}"'.format(directory))
         return
-    logger.debug('"{}" matches {}'.format(exercise['name']))
+    logger.debug('"{}" matches {}'.format(directory, exercise['name']))
 
     destination = easy_helper.exercise_path(exercise)
 

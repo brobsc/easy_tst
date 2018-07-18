@@ -22,7 +22,7 @@ class ColoredConsoleHandler(logging.StreamHandler):
         elif(levelno >= 30):  # WARNING
             color = '\x1b[33;1m'  # yellow
         elif(levelno >= 20):  # INFO
-            color = '\x1b[32m'  # green
+            color = '\x1b[39m'  # white/black
         elif(levelno >= 10):  # DEBUG
             color = '\x1b[30;1m'  # pink
         else:  # NOTSET and anything else
