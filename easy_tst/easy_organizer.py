@@ -105,12 +105,12 @@ def main(ask, base_path):
     directories = get_tst_directories(base_path)
 
     if ask:
-        logger.warning('Press Y if you agree with the changes. Any other key to skip that folder.')
+        logger.warning('Press Y if you agree with the changes. Any other key to skip that folder')
 
     for d in directories:
         organize(d, ask)
 
-    logger.info('organize done!')
+    logger.info('Organize done!')
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ import logging
 logger = logging.getLogger('easy_tst')
 
 def clipboard_try():
-    logger.debug('Triggered checkout from clipboard.')
+    logger.debug('Triggered checkout from clipboard')
     # Get what is in clipboard and remove spaces
     clipboard = pyperclip.paste().replace(' ', '')
 
@@ -22,9 +22,9 @@ def clipboard_try():
         try:
             tst_wrapper.main(clipboard)
         except IndexError:
-            logger.warning('"{}" is not a valid code.'.format(clipboard))
+            logger.warning('"{}" is not a valid code'.format(clipboard))
     else:
-        logger.debug('Clipboard contents are greater than 4 chars.')
+        logger.debug('Clipboard contents are greater than 4 chars')
         logger.info('Tried to checkout: "{}..."'.format(clipboard[:10]).replace('\n', ' '))
         logger.info('Code does not meet base criteria. Skipping...')
 
@@ -58,7 +58,7 @@ def watcher():
 
 def main():
     easy_helper.is_logged_in()
-    logger.info('Starting watch mode.')
+    logger.info('Starting watch mode')
 
     # Auto-checks changes in the clipboard and interrupt if KeyboardInterrupt
     watcher()

@@ -79,7 +79,7 @@ def format_unit(exercise):
 
 def header(exercise, student):
     logger.debug('Generating header for {}'.format(exercise['name']))
-    logger.debug('Student is "{}:{}"'.format(student['name'], student['email']))
+    logger.debug('Received "{}: {}" as student'.format(student['name'], student['email']))
     result = '''# coding: utf-8
 
 ##{:44}##
@@ -118,9 +118,9 @@ def is_logged_in():
     logged_in = (r.status_code != 400)
 
     if not logged_in:
-        logger.info('Please log on tst (Run tst login).')
-        logger.error('Not logged in tst.')
-        raise RuntimeError('Not logged in tst.')
+        logger.info('Please log on tst (Run tst login)')
+        logger.error('Not logged in tst')
+        raise RuntimeError('Not logged in tst')
 
 
 def rename_directory(base, destination):
@@ -135,7 +135,7 @@ def rename_directory(base, destination):
 You already have a directory for this exercise with the following path:
 {}
 
-This directory will be erased and updated with the latest commit.'''.format(destination))
+This directory will be ERASED and updated with the latest commit'''.format(destination))
 
         while True:
             decision = raw_input('Are you sure you want to proceed with this operation? (y/n) ').strip().lower()

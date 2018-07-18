@@ -49,11 +49,11 @@ organizer.add_argument('-f', '--force',
 
 # Set watch as default subparser
 if len(sys.argv) == 1:
-    logger.debug('No arguments detected. Setting default to watch mode.')
+    logger.debug('No arguments detected. Setting default to watch mode')
     sys.argv.append('watch')
 args = parser.parse_args()
 
-logger.debug('args.command is set to "{}".'.format(args.command))
+logger.debug('args.command is set to "{}"'.format(args.command))
 
 if args.command == 'watch':
     easy_watcher.main()

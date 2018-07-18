@@ -46,9 +46,9 @@ def checkout(exercise):
 
     # Check checkout vality
     if 'token signature.' in tst_out:
-        raise RuntimeError('Not logged in tst.')
+        raise RuntimeError('Not logged in tst')
     if 'No object' in tst_out:
-        raise ValueError('Invalid checkout code.')
+        raise ValueError('Invalid checkout code')
 
     result_path = os.path.join(path, code)
     logger.debug('Returning checkout path: {}'.format(result_path))
@@ -123,7 +123,7 @@ def update_cache():
 
     if response.status_code == 400:
         logger.error('Response code was "400"')
-        raise RuntimeError('Not logged in tst.')
+        raise RuntimeError('Not logged in tst')
 
     CACHE = response.json()
     logger.debug('Cache has been updated')
@@ -152,7 +152,7 @@ def main(code):
     final_path = easy_helper.rename_directory(original_path, destination_path)
 
     student = {'name': CACHE['name'], 'email': CACHE['email']}
-    logger.debug('Current student is "{}:{}"'.format(student['name'], student['email']))
+    logger.debug('Student generated. Current student is "{}: {}"'.format(student['name'], student['email']))
 
     logger.debug('Requesting file creation for "{}"'.format(code))
     easy_helper.create_exercise_file(name, final_path, exercise, student)
